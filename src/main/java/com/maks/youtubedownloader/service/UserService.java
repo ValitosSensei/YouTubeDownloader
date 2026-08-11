@@ -25,7 +25,7 @@ public class UserService {
 
     @Transactional
     public String createNewUser(RegistrationRequest registrationRequest) {
-        if (!userRepository.findByEmail(registrationRequest.getEmail()) ) {
+        if (!userRepository.existsByEmail(registrationRequest.getEmail()) ) {
             User user = new User();
 
             user.setEmail(registrationRequest.getEmail());
