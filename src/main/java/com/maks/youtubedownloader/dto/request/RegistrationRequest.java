@@ -1,9 +1,6 @@
 package com.maks.youtubedownloader.dto.request;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,6 +20,10 @@ public class RegistrationRequest {
 
     @NotBlank
     @Size(min = 8, max = 50)
+    @Pattern(
+            regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=\\S+$).*$",
+    message = "Пароль повинен містити принаймні одну велику літеру, одну цифру та не повинен містити пробілів"
+    )
     private String password;
 
 
