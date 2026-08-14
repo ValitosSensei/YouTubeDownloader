@@ -1,18 +1,14 @@
-package com.maks.youtubedownloader.security;
+package com.maks.youtubedownloader.configuration.GlobalException;
 
-import com.maks.youtubedownloader.dto.request.RegistrationRequest;
+import com.maks.youtubedownloader.configuration.exceptions.UserAlreadyExistsException;
 import com.maks.youtubedownloader.dto.response.ValidationErrorResponse;
-import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.View;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,11 +17,7 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    private final View error;
 
-    public GlobalExceptionHandler(View error) {
-        this.error = error;
-    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
@@ -37,4 +29,15 @@ public class GlobalExceptionHandler {
                 .collect(Collectors.toList());
         return   ResponseEntity.badRequest().body(errors);
     }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    @ResponseBody
+    public ResponseEntity<Map<String, String>>  handleUserAlreadyExists(UserAlreadyExistsException ex) {
+        Map<String, String>  errors = new HashMap<>();
+        errors.put("error", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errors);
+    }
+
+
+
 }

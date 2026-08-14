@@ -1,8 +1,11 @@
 package com.maks.youtubedownloader.controller;
 
 import com.maks.youtubedownloader.dto.request.RegistrationRequest;
+import com.maks.youtubedownloader.dto.response.RegistrationSuccessResponse;
 import com.maks.youtubedownloader.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,9 +24,9 @@ public class UserController {
 
 
     @PostMapping("/registration")
-    public String registerNewUser(@RequestBody @Valid RegistrationRequest registrationRequest) {
-        userService.createNewUser(registrationRequest);
-        return "New user registered "+registrationRequest.getFirstName()+
-                " "+registrationRequest.getLastName();
+    public ResponseEntity<RegistrationSuccessResponse> registerNewUser(@RequestBody @Valid
+                                                                           RegistrationRequest registrationRequest) {
+        RegistrationSuccessResponse response =  userService.createNewUser(registrationRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }
